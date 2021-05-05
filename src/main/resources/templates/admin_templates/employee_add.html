@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Employees</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.css} "/>
+</head>
+<body>
+<div class="container">
+<!--<form action="#" th:action="@{/admin/employee}" th:object="${employee}" method="post">-->
+<!--    <input type="text" th:field="*{firstName}" />-->
+<!--    <input type="text" th:field="*{lastName}" />-->
+<!--    <input type="text" th:field="*{email}" />-->
+<!--    <input type="submit" />-->
+<!--</form>-->
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">EMS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"></a>
+                    </li>
+                </ul>
+                <form class="d-flex" th:action="@{/logout}" method="post">
+                    <input class="btn btn-danger" type="submit" value="Sign Out"/>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Add Employee
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <form class="row g-3" action="#" th:action="@{/admin/employee}" th:object="${employee}" method="post">
+                        <div class="col-auto">
+                            <label for="firstNameInput" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstNameInput"  th:field="*{firstName}">
+                        </div>
+
+                        <div class="col-auto">
+                            <label for="lastNameInput" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastNameInput"  th:field="*{lastName}">
+                        </div>
+
+                        <div class="col-auto">
+                            <label for="emailInput" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="emailInput"  th:field="*{email}">
+                        </div>
+                        <div class="col-auto">
+                            <input type="submit" class="btn btn-success"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${user_list}">
+        <th scope="row" th:text="${user.id}"></th>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.email}"></td>
+    </tr>
+
+    </tbody>
+</table>
+</div>
+
+
+<!--<p th:each="user : ${user_list}"-->
+<!--   th:text="${user.firstName}">${user.firstName}</p>-->
+
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>

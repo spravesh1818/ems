@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employee Management System</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.css} "/>
+</head>
+<body>
+<h1>Welcome Administrator!</h1>
+
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>
