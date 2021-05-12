@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+  backend:
+    image: 'docker-spring-boot-postgres:latest'
+    build:
+      context: .
+    container_name: backend
+    ports:
+    - 8080:8080
+    depends_on:
+      - db
+
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: postgresDB
+    restart: always
+    ports:
+        - 5433:5432
+    environment:
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_USER: postgres
+        POSTGRES_DB: ems
+
+  frontend:
+    container_name: frontend
+    build: ./src/main/webapp
+    depends_on:
+      - backend
+    ports:
+    - 8000:8080
