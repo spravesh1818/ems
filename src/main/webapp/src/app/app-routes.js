@@ -1,8 +1,10 @@
 import { createWebHistory, createRouter } from "vue-router";
 import PageNotFound from "./shared/components/PageNotFound";
 import LandingPage from "./shared/components/LandingPage";
+import employeeRoutes from "@/app/employee/employee-routes";
+import adminRoutes from "@/app/admin/admin-routes";
 
-const routes = [
+const appRoutes = [
     {
         path: "/",
         name: "Landing-Page",
@@ -15,6 +17,7 @@ const routes = [
     },
 ];
 
+const routes=[...employeeRoutes,...appRoutes,...adminRoutes]
 const router = createRouter({
     history: createWebHistory(),
     routes,

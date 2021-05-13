@@ -25,10 +25,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtFilter jwtFilter;
 
 
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
     }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -37,7 +39,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/employee").hasAnyRole("ADMIN", "EMPLOYEE")
 //                .antMatchers("/").permitAll()
 //                .and().formLogin();
-
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/authenticate").permitAll()
                 .anyRequest().authenticated()

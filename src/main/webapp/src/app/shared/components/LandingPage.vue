@@ -5,7 +5,7 @@
         Welcome to Employee Management System
       </h1>
       <p class="subtitle">
-        Please <strong>Login</strong>to continue
+        Please <strong>Login</strong> to continue
       </p>
     </div>
   </section>
@@ -20,9 +20,10 @@
       </header>
       <div class="card-content">
         <div class="content">
+          <form id="login" @submit="submitForm">
           <div class="field">
             <p class="control has-icons-left has-icons-right">
-              <input class="input" type="email" placeholder="Email">
+              <input class="input" v-model="form.username" type="text" placeholder="Username" required>
               <span class="icon is-small is-left">
       <i class="fas fa-envelope"></i>
     </span>
@@ -33,7 +34,7 @@
           </div>
           <div class="field">
             <p class="control has-icons-left">
-              <input class="input" type="password" placeholder="Password">
+              <input class="input" type="password" v-model="form.password" placeholder="Password" required>
               <span class="icon is-small is-left">
       <i class="fas fa-lock"></i>
     </span>
@@ -46,6 +47,7 @@
               </button>
             </p>
           </div>
+          </form>
         </div>
       </div>
 
@@ -57,9 +59,30 @@
 </template>
 
 <script>
+import {fetchUsers} from "@/app/shared/services/authentication/authenticationService";
+
+
+
 export default {
-  name: "LandingPage"
+  name: "LandingPage",
+  data(){
+    return {
+      form:{
+        username:"",
+        password:""
+      }
+    }
+  },
+  methods:{
+    submitForm(event){
+      event.preventDefault();
+      fetchUsers(this.form.username,this.form.password).then(res=>{
+        this.store.state({res})
+      })
+    }
+  }
 }
+
 </script>
 
 <style scoped>
