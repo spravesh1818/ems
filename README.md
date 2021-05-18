@@ -1,4 +1,4 @@
-##EMS APPLICATION README
+## EMS APPLICATION README
 
 The application has 2 parts:<br>
 * Backend:<br>
@@ -7,16 +7,16 @@ The application has 2 parts:<br>
 * Frontend:<br>
     Developed in VueJS 3
   
-###Running The Application
+### Running The Application
 
-#####Backend 
+##### Backend 
 
 ```docker-compose up --build```
 
 * Note:Docker and docker-compose should be available in the system
 
 
-#####Frontend
+##### Frontend
 
 ```cd src/main/webapp```<br>
 ```npm install```<br>
@@ -24,7 +24,7 @@ The application has 2 parts:<br>
 
 * Note:node should be installed in the system
 
-#####Application interface
+##### Application interface
 
 * Once the frontend and backend are running the application can be accessed by going to <br>
 
@@ -35,4 +35,4 @@ The default username and password are:
 username:admin
 password:pass
 
-#####Still work on progress
+Note:Still work on progress
