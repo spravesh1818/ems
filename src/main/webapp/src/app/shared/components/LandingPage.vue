@@ -42,7 +42,7 @@
           </div>
           <div class="field">
             <p class="control">
-              <button class="button is-success">
+              <button class="button is-success" :disabled='isLoginButtonDisabled'>
                 Login
               </button>
             </p>
@@ -67,6 +67,7 @@ export default {
   name: "LandingPage",
   data(){
     return {
+      isLoginButtonDisabled:false,
       form:{
         username:"",
         password:""
@@ -76,8 +77,25 @@ export default {
   methods:{
     submitForm(event){
       event.preventDefault();
+      this.isLoginButtonDisabled=true;
       fetchUsers(this.form.username,this.form.password).then(res=>{
-        this.store.state({res})
+          this.isLoginButtonDisabled=false;
+          //got the token
+          //now save it in the localstorage
+          //and also the role
+        localStorage.setItem( 'token', res.token);
+        console.log(res);
+        localStorage.setItem('role',res.userDetails.authority);
+
+        if(res.userDetails.authority==="ROLE_ADMIN"){
+          this.$router.push("/admin");
+        }else{
+          this.$router.push("/employee");
+        }
+
+      }).catch(err=>{
+        console.log(err);
+        this.isLoginButtonDisabled=false;
       })
     }
   }

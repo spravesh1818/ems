@@ -17,7 +17,6 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/admin/employee")
-@CrossOrigin("*")
 public class EmployeeController {
 
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);

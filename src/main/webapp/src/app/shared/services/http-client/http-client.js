@@ -7,7 +7,7 @@ import { apiBaseUrl } from '@/environment/environment';
  * Some general configuration can be added like timeout, headers, params etc. More details can be found on https://github.com/axios/axios
  * */
 const config = {
-    baseURL: apiBaseUrl
+    baseURL: apiBaseUrl,
 };
 
 /**

@@ -80,54 +80,16 @@
               </tr>
               </thead>
               <tbody>
-              <tr>
-                <th>1</th>
-                <td>Gopal</td>
-                <td>Bharvad</td>
-                <td>gopal.b@gmail.com</td>
+              <tr v-for="(item,index) in listData" v-bind:key="index">
+                <th>{{index+1}}</th>
+                <td>{{item.firstName}}</td>
+                <td>{{item.lastName}}</td>
+                <td>{{item.email}}</td>
                 <td>
-                  <button class="button is-info is-light mr-2" @click="isEditModalActive=true">Edit</button>
-                  <button class="button is-danger is-light" @click="isDeleteModalActive=true">Delete</button>
+                  <button class="button is-info is-light mr-2" @click="editEmployee(index)">Edit</button>
+                  <button class="button is-danger is-light" @click="deletePrepare(item.id)">Delete</button>
                 </td>
               </tr>
-
-              <tr>
-                <th>2</th>
-                <td>Mitun</td>
-                <td>Patel</td>
-                <td>patel_mithun@gmail.com</td>
-                <td>
-                  <button class="button is-info is-light mr-2" @click="isEditModalActive=true">Edit</button>
-                  <button class="button is-danger is-light" @click="isDeleteModalActive=true">Delete</button>
-                </td>
-              </tr>
-
-
-
-              <tr>
-                <th>3</th>
-                <td>Mariyamma</td>
-                <td>Sadaf</td>
-                <td>mariyamma.s@gmail.com</td>
-                <td>
-                  <button class="button is-info is-light mr-2" @click="isEditModalActive=true">Edit</button>
-                  <button class="button is-danger is-light" @click="isDeleteModalActive=true">Delete</button>
-                </td>
-              </tr>
-
-
-              <tr>
-                <th>4</th>
-                <td>Sravan Goud</td>
-                <td>Bandi</td>
-                <td>sgb@gmail.com</td>
-                <td>
-                  <button class="button is-info is-light mr-2" @click="isEditModalActive=true">Edit</button>
-                  <button class="button is-danger is-light" @click="isDeleteModalActive=true">Delete</button>
-                </td>
-              </tr>
-
-
               </tbody>
             </table>
           </div>
@@ -141,33 +103,35 @@
       <div class="modal-content">
         <div class="tile is-parent">
           <div class="tile is-child box">
+            <form @submit="addEmployee">
             <div class="field">
               <h3>Add an employee</h3>
 
               <p class="control has-icons-left has-icons-right">
-                <input class="input" placeholder="First Name" type="text" required>
+                <input class="input" placeholder="First Name" type="text" v-model="employeeAddForm.firstName" required>
               </p>
             </div>
             <div class="field">
               <p class="control has-icons-left">
-                <input class="input" placeholder="Last Name" type="text" required>
+                <input class="input" placeholder="Last Name" type="text" v-model="employeeAddForm.lastName" required>
               </p>
             </div>
 
             <div class="field">
               <p class="control has-icons-left">
-                <input class="input" placeholder="Email" type="email" required>
+                <input class="input" placeholder="Email" type="email" v-model="employeeAddForm.email" required>
               </p>
             </div>
 
 
             <div class="field">
               <p class="control">
-                <button class="button is-success">
+                <button type="submit" class="button is-success">
                   Save
                 </button>
               </p>
             </div>
+            </form>
           </div>
         </div>
       </div>
@@ -182,25 +146,25 @@
 
             <div class="field">
               <p class="control has-icons-left has-icons-right">
-                <input class="input" v-model="edit_data.first_name" placeholder="First Name" type="text" required>
+                <input class="input" v-model="employeeEditForm.firstName" placeholder="First Name" type="text" required>
               </p>
             </div>
             <div class="field">
               <p class="control has-icons-left">
-                <input class="input" v-model="edit_data.last_name" placeholder="Last Name" type="text" required>
+                <input class="input" v-model="employeeEditForm.lastName" placeholder="Last Name" type="text" required>
               </p>
             </div>
 
             <div class="field">
               <p class="control has-icons-left">
-                <input class="input" v-model="edit_data.email" placeholder="Email" type="email" required>
+                <input class="input" v-model="employeeEditForm.email" placeholder="Email" type="email" required>
               </p>
             </div>
 
 
             <div class="field">
               <p class="control">
-                <button class="button is-success">
+                <button class="button is-success" @click="editEmployeeData">
                   Update
                 </button>
               </p>
@@ -221,10 +185,10 @@
 
             <div class="field">
               <p class="control">
-                <button class="button is-danger m-3">
+                <button class="button is-danger m-3" @click="logout">
                   Logout
                 </button>
-                <button class="button is-primary m-3">
+                <button class="button is-primary m-3" @click="isLogoutModalActive=false">
                   Cancel
                 </button>
               </p>
@@ -245,7 +209,7 @@
 
             <div class="field">
               <p class="control">
-                <button class="button is-danger m-3">
+                <button class="button is-danger m-3" @click="deleteItem">
                   Delete
                 </button>
                 <button class="button is-primary m-3" @click="isDeleteModalActive=false">
@@ -263,19 +227,69 @@
 </template>
 
 <script>
+
+import {addAnEmployee, getAllEmployees,deleteEmployee,editEmployee} from "@/app/admin/shared/services/employeeServices/employeeCrudService";
+
 export default {
   name: "Admin",
+  created() {
+    this.employeeListPopulate();
+  },
   data() {
     return {
+      deleteId:{},
+      listData:[],
+      employeeAddForm:{
+        firstName:"",
+        lastName:"",
+        email:"",
+      },
+      employeeEditForm:{
+        id:0,
+        firstName:"",
+        lastName:"",
+        email:"",
+      },
       isAddEmployeesActive: false,
       isLogoutModalActive:false,
       isDeleteModalActive:false,
       isEditModalActive:false,
-      edit_data:{
-        first_name:"Gopal",
-        last_name:"Bharvad",
-        email:"gopal.b@gmail.com",
-      }
+    }
+  },
+  methods:{
+    employeeListPopulate(){
+      const resp=getAllEmployees();
+      resp.then(res=>console.log(this.listData=res.data.message));
+    },
+    logout(event){
+      event.preventDefault();
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      this.$router.push("/");
+    },
+    addEmployee(event){
+      event.preventDefault();
+      addAnEmployee(this.employeeAddForm).then(res=>{
+        console.log(res);
+        this.isAddEmployeesActive=false;
+      });
+      location.reload();
+    },
+    deletePrepare(id){
+      this.deleteId=id;
+      this.isDeleteModalActive=true;
+    },
+    editEmployee(index){
+      this.employeeEditForm=this.listData[index];
+      this.isEditModalActive=true;
+    },
+    editEmployeeData(){
+      editEmployee(this.employeeEditForm).then(res=>{console.log(res);this.isEditModalActive=false;});
+    },
+    deleteItem(){
+      deleteEmployee(this.deleteId);
+      this.isDeleteModalActive=false;
+      location.reload();
     }
   }
 }
