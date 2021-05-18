@@ -33,6 +33,7 @@ public class EmployeeManagementSystemApplication implements CommandLineRunner {
             user.setPassword("pass");
             user.setActive(true);
             user.setRoles("ROLE_ADMIN");
+            userRepository.save(user);
         }
         System.out.println(userRepository.count());
     }
