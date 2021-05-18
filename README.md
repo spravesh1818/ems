@@ -1,10 +1,38 @@
-###RUNNING THE APPLICATION
+##EMS APPLICATION README
 
-1.Prepare a db in postgres database
+The application has 2 parts:<br>
+* Backend:<br>
+    Developed in Spring Boot<br>
+  
+* Frontend:<br>
+    Developed in VueJS 3
+  
+###Running The Application
 
-2.Change the application.properties to your desired database
+#####Backend 
 
-3.Run gradle buid task
+```docker-compose up --build```
 
-4.Run the application
+* Note:Docker and docker-compose should be available in the system
 
+
+#####Frontend
+
+```cd src/main/webapp```<br>
+```npm install```<br>
+```npm run serve```
+
+* Note:node should be installed in the system
+
+#####Application interface
+
+* Once the frontend and backend are running the application can be accessed by going to <br>
+
+```http://localhost:8081/```
+
+The default username and password are:
+
+username:admin
+password:pass
+
+#####Still work on progress

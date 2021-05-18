@@ -36,7 +36,7 @@ public class EmployeeController {
     }
 
     @GetMapping("")
-    public ResponseEntity<?> addEmployeeForm(Authentication authentication){
+    public ResponseEntity<?> getAllEmployees(Authentication authentication){
         if(AuthorizationUtil.getInstance().checkAdminRole(authentication)) {
             List<EmployeeDto> employees=employeeService.getAllEmployees();
             return ResponseEntity.ok(new GenericResponse(200, "SUCCESS",employees));
