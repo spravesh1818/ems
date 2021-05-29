@@ -1,13 +1,12 @@
-package com.ems.ems;
+package com.ems.ems.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EmployeeManagementSystemApplicationTests {
+public class EmployeeControllerTest {
 
     @Test
-    void addEmployee() {
+    void contextLoads() {
     }
-
 }

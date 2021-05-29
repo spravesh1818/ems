@@ -1,10 +1,18 @@
 package com.ems.ems.repository;
 
+
 import com.ems.ems.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+import javax.transaction.Transactional;
 
-public interface UserRepository extends JpaRepository<User,Integer> {
-    Optional<User> findByUserName(String username);
+public interface UserRepository extends JpaRepository<User, Integer> {
+
+  boolean existsByUsername(String username);
+
+  User findByUsername(String username);
+
+  @Transactional
+  void deleteByUsername(String username);
+
 }
