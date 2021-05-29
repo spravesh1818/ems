@@ -2,7 +2,6 @@ version: '2'
 
 services:
   backend:
-    image: 'docker-spring-boot-postgres:latest'
     build:
       context: .
     container_name: backend
@@ -12,13 +11,14 @@ services:
       - db
 
   db:
-    image: 'postgres:13.1-alpine'
-    container_name: postgresDB
+    image: 'mysql'
+    container_name: mysql-latest
     restart: always
     ports:
-        - 5433:5432
+        - 3306:3306
     environment:
-        POSTGRES_PASSWORD: postgres
-        POSTGRES_USER: postgres
-        POSTGRES_DB: ems
+        MYSQL_ROOT_PASSWORD: secret
+        MYSQL_DATABASE: ems
+        MYSQL_USER: root
+        MYSQL_PASSWORD: secret
 
