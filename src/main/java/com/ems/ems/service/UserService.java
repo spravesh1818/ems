@@ -69,4 +69,16 @@ public class UserService {
     return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getRoles());
   }
 
+  public Boolean changePassword(int id,String password){
+    if(userRepository.findById(id).isPresent())
+    {
+      User user=userRepository.findById(id).get();
+      user.setPassword(passwordEncoder.encode(password));
+      userRepository.save(user);
+      return true;
+    }{
+      return false;
+    }
+  }
+
 }

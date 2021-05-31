@@ -1,9 +1,7 @@
 package com.ems.ems.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Employee {
@@ -13,7 +11,43 @@ public class Employee {
 
     private String firstName;
     private String lastName;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
+
+    @OneToMany(mappedBy="employee",orphanRemoval = true,cascade = CascadeType.ALL)
+    private Set<SalarySlip> salarySlips;
+
+    @OneToMany(mappedBy="employee",orphanRemoval = true,cascade = CascadeType.ALL)
+    private Set<Attendence> attendences;
+
+    @OneToMany(mappedBy="employee",orphanRemoval = true,cascade = CascadeType.ALL)
+    private Set<Shift> shifts;
+
+    public Set<Shift> getShifts() {
+        return shifts;
+    }
+
+    public void setShifts(Set<Shift> shifts) {
+        this.shifts = shifts;
+    }
+
+    public Set<Attendence> getAttendences() {
+        return attendences;
+    }
+
+    public void setAttendences(Set<Attendence> attendences) {
+        this.attendences = attendences;
+    }
+
+    public Set<SalarySlip> getSalarySlips() {
+        return salarySlips;
+    }
+
+    public void setSalarySlips(Set<SalarySlip> salarySlips) {
+        this.salarySlips = salarySlips;
+    }
 
     public int getId() {
         return id;

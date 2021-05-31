@@ -52,7 +52,7 @@ public class EmployeeManagementSystemApplication implements CommandLineRunner {
             client.setUsername("client");
             client.setPassword("client");
             client.setEmail("client@email.com");
-            client.setRoles(new ArrayList<Role>(Arrays.asList(Role.ROLE_CLIENT)));
+            client.setRoles(new ArrayList<Role>(Arrays.asList(Role.ROLE_EMPLOYEE)));
 
             userService.signup(client);
         }catch(Exception ex){

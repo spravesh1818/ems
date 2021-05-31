@@ -24,6 +24,18 @@ public class User {
   @ElementCollection(fetch = FetchType.EAGER)
   List<Role> roles;
 
+
+  @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+  private Employee employee;
+
+  public Employee getEmployee() {
+    return employee;
+  }
+
+  public void setEmployee(Employee employee) {
+    this.employee = employee;
+  }
+
   public Integer getId() {
     return id;
   }

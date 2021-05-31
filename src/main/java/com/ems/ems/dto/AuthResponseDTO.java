@@ -1,15 +1,19 @@
 package com.ems.ems.dto;
 
-public class ResponseDTO {
+import com.ems.ems.model.Role;
+
+public class AuthResponseDTO {
     private String token;
     private String refreshToken;
     private String type;
+    private Role role;
 
 
-    public ResponseDTO(String token, String refreshToken, String type) {
+    public AuthResponseDTO(String token, String refreshToken, String type, Role role) {
         this.token = token;
         this.refreshToken = refreshToken;
         this.type = type;
+        this.role=role;
     }
 
     public String getToken() {
@@ -22,6 +26,14 @@ public class ResponseDTO {
 
     public String getRefreshToken() {
         return refreshToken;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public void setRefreshToken(String refreshToken) {

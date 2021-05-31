@@ -232,7 +232,7 @@ import {addAnEmployee, getAllEmployees,deleteEmployee,editEmployee} from "@/app/
 
 export default {
   name: "Admin",
-  created() {
+  mounted() {
     this.employeeListPopulate();
   },
   data() {
@@ -259,7 +259,10 @@ export default {
   methods:{
     employeeListPopulate(){
       const resp=getAllEmployees();
-      resp.then(res=>console.log(this.listData=res.data.message));
+      resp.then(res=>{
+        console.table(res.data.data[0]);
+        this.listData=res.data.data[0];
+      });
     },
     logout(event){
       event.preventDefault();
@@ -273,7 +276,6 @@ export default {
         console.log(res);
         this.isAddEmployeesActive=false;
       });
-      location.reload();
     },
     deletePrepare(id){
       this.deleteId=id;

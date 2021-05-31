@@ -1,20 +1,21 @@
 package com.ems.ems.controller;
 
-import com.ems.ems.dto.ResponseDTO;
-import com.ems.ems.dto.UserDataDTO;
-import com.ems.ems.dto.UserResponseDTO;
+import com.ems.ems.dto.*;
 import com.ems.ems.model.User;
 import com.ems.ems.service.UserService;
 import io.swagger.annotations.*;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/users")
 @Api(tags = "users")
 public class UserController {
@@ -30,13 +31,13 @@ public class UserController {
   @ApiResponses(value = {//
       @ApiResponse(code = 400, message = "Something went wrong"), //
       @ApiResponse(code = 422, message = "Invalid username/password supplied")})
-  public ResponseDTO login(//
-                           @ApiParam("Username") @RequestParam String username, //
-                           @ApiParam("Password") @RequestParam String password) {
+  public AuthResponseDTO login(//
+                               @ApiParam("Username") @RequestParam String username, //
+                               @ApiParam("Password") @RequestParam String password) {
     String token=userService.signin(username, password);
     String refresh_token=userService.refresh(username);
-    ResponseDTO dto=new ResponseDTO(token,refresh_token,"Bearer");
-    return dto;
+    User user=userService.search(username);
+    return new AuthResponseDTO(token,refresh_token,"Bearer",user.getRoles().get(0));
   }
 
   @PostMapping("/signup")
@@ -90,5 +91,17 @@ public class UserController {
   public String refresh(HttpServletRequest req) {
     return userService.refresh(req.getRemoteUser());
   }
+
+
+  @PostMapping("/change-password")
+  @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HR')")
+  public ResponseEntity<?> changePassword(HttpServletRequest req, @RequestBody ChangePasswordDTO passwordDTO){
+    Boolean success=userService.changePassword(passwordDTO.getId(),passwordDTO.getPassword());
+    if(success)
+            return ResponseEntity.ok(new GenericResponse(200,"SUCCESS", Collections.singletonList("Password Changed Successfully")));
+    else
+      return ResponseEntity.ok(new GenericResponse(200,"FAILED", Collections.singletonList("User not present")));
+  }
+
 
 }

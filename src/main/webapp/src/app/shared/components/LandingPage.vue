@@ -79,15 +79,16 @@ export default {
       event.preventDefault();
       this.isLoginButtonDisabled=true;
       fetchUsers(this.form.username,this.form.password).then(res=>{
+        console.log(res);
           this.isLoginButtonDisabled=false;
           //got the token
           //now save it in the localstorage
           //and also the role
         localStorage.setItem( 'token', res.token);
         console.log(res);
-        localStorage.setItem('role',res.userDetails.authority);
+        localStorage.setItem('role',res.role);
 
-        if(res.userDetails.authority==="ROLE_ADMIN"){
+        if(res.role==="ROLE_ADMIN"){
           this.$router.push("/admin");
         }else{
           this.$router.push("/employee");
