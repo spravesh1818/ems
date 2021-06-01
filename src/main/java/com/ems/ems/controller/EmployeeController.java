@@ -34,6 +34,7 @@ public class EmployeeController {
     @PostMapping("")
     public ResponseEntity<?> addEmployee(Authentication authentication, @RequestBody EmployeeDto dto){
             employeeService.save(dto);
+            logger.info("Employee added to the database");
             return ResponseEntity.ok(new GenericResponse(200, "SUCCESS", Collections.singletonList("Employee added successfully")));
 
 
@@ -43,6 +44,7 @@ public class EmployeeController {
     @GetMapping("")
     public ResponseEntity<?> getAllEmployees(Authentication authentication){
             List<EmployeeDto> employees=employeeService.getAllEmployees();
+            logger.info("All employee information retrieved");
             return ResponseEntity.ok(new GenericResponse(200, "SUCCESS", Collections.singletonList(employees)));
 
     }
@@ -53,6 +55,8 @@ public class EmployeeController {
                 logger.info("User with id="+id+" to be deleted");
                 EmployeeDto employeeDto=employeeService.getEmployeeId(id);
                 userService.delete(employeeDto.getEmail());
+                employeeService.deleteEmployee(id);
+                logger.info("Employee deleted successfully");
                 return ResponseEntity.ok(new GenericResponse(200, "SUCCESS", Collections.singletonList("Employee Deleted Successfully")));
     }
 
@@ -61,6 +65,7 @@ public class EmployeeController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> editEmployeeInfo(Authentication authentication,@PathVariable int id,@RequestBody EmployeeDto employeeDto){
                 employeeDto=employeeService.editEmployeeData(id,employeeDto);
+                logger.info("Employee edited successfully");
                 return ResponseEntity.ok(new GenericResponse(200, "SUCCESS", (List<Object>) employeeDto));
     }
 

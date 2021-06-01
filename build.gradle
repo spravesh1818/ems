@@ -33,11 +33,11 @@ dependencies {
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
-    //implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.5.0'
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.5'
     implementation group: 'com.google.guava', name: 'guava', version: '28.0-jre'
-    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
+    implementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+
 
 
 

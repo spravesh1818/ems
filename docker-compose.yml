@@ -9,16 +9,27 @@ services:
     - 8080:8080
     depends_on:
       - db
+    volumes:
+    - /var/lib/data/ems
 
   db:
     image: 'mysql'
-    container_name: mysql-latest
+    container_name: mysqldb
     restart: always
+    environment:
+      MYSQL_DATABASE: ems
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
     ports:
         - 3306:3306
-    environment:
-        MYSQL_ROOT_PASSWORD: secret
-        MYSQL_DATABASE: ems
-        MYSQL_USER: root
-        MYSQL_PASSWORD: secret
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql
+volumes:
+    my-db:
+
+
 

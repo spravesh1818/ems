@@ -59,7 +59,10 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(int id) throws NoSuchElementException {
-        employeeRepository.delete(employeeRepository.findById(id).get());
+        if(employeeRepository.findById(id).isPresent()){
+            employeeRepository.delete(employeeRepository.findById(id).get());
+        }
+
     }
 
     public EmployeeDto editEmployeeData(int id,EmployeeDto employeeDto) throws NoSuchElementException{
