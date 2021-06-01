@@ -276,6 +276,7 @@ export default {
         console.log(res);
         this.isAddEmployeesActive=false;
       });
+      location.reload();
     },
     deletePrepare(id){
       this.deleteId=id;

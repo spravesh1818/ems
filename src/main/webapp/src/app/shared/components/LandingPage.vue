@@ -80,7 +80,7 @@ export default {
       this.isLoginButtonDisabled=true;
       fetchUsers(this.form.username,this.form.password).then(res=>{
         console.log(res);
-          this.isLoginButtonDisabled=false;
+        this.isLoginButtonDisabled=false;
           //got the token
           //now save it in the localstorage
           //and also the role

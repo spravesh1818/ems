@@ -53,6 +53,10 @@ public class UserService {
     userRepository.deleteByUsername(username);
   }
 
+  public void edit(User user){
+    userRepository.save(user);
+  }
+
   public User search(String username) {
     User user = userRepository.findByUsername(username);
     if (user == null) {

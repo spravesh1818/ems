@@ -25,6 +25,9 @@ public class EmployeeService {
     UserRepository userRepository;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public EmployeeDto save(EmployeeDto employeeDto){
@@ -67,6 +70,10 @@ public class EmployeeService {
 
     public EmployeeDto editEmployeeData(int id,EmployeeDto employeeDto) throws NoSuchElementException{
         Employee employee=employeeRepository.findById(id).get();
+        User user=userService.search(employee.getEmail());
+        user.setUsername(employeeDto.getEmail());
+        user.setEmail(employeeDto.getEmail());
+        userService.edit(user);
         employee.setEmail(employeeDto.getEmail());
         employee.setFirstName(employeeDto.getFirstName());
         employee.setLastName(employeeDto.getLastName());

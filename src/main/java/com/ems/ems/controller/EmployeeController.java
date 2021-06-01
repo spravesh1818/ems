@@ -32,7 +32,7 @@ public class EmployeeController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("")
-    public ResponseEntity<?> addEmployee(Authentication authentication, @RequestBody EmployeeDto dto){
+    public ResponseEntity<?> addEmployee(@RequestBody EmployeeDto dto){
             employeeService.save(dto);
             logger.info("Employee added to the database");
             return ResponseEntity.ok(new GenericResponse(200, "SUCCESS", Collections.singletonList("Employee added successfully")));
@@ -42,7 +42,7 @@ public class EmployeeController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("")
-    public ResponseEntity<?> getAllEmployees(Authentication authentication){
+    public ResponseEntity<?> getAllEmployees(){
             List<EmployeeDto> employees=employeeService.getAllEmployees();
             logger.info("All employee information retrieved");
             return ResponseEntity.ok(new GenericResponse(200, "SUCCESS", Collections.singletonList(employees)));
@@ -61,9 +61,15 @@ public class EmployeeController {
     }
 
 
-    @PutMapping(value="/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> editEmployeeInfo(Authentication authentication,@PathVariable int id,@RequestBody EmployeeDto employeeDto){
+    @PutMapping(value="/{id}")
+    public ResponseEntity<?> editEmployeeInfo(@PathVariable("id") int id,@RequestBody EmployeeDto employeeDto){
+                logger.info("Employee with id:"+id+" to be edited");
+                logger.info(employeeDto.getEmail());
+                logger.info(employeeDto.getFirstName());
+                logger.info(employeeDto.getLastName());
+                logger.info(String.valueOf(employeeDto.getId()));
+
                 employeeDto=employeeService.editEmployeeData(id,employeeDto);
                 logger.info("Employee edited successfully");
                 return ResponseEntity.ok(new GenericResponse(200, "SUCCESS", (List<Object>) employeeDto));
