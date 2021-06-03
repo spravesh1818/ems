@@ -1,4 +1,6 @@
 package com.ems.ems.dto;
+import com.ems.ems.model.Employee;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -14,6 +16,14 @@ public class EmployeeDto {
 
     @Email
     private String email;
+
+
+    public EmployeeDto(int id, String firstName, String lastName, String email) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
 
     public int getId() {
         return id;
@@ -45,5 +55,12 @@ public class EmployeeDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public EmployeeDto() {
+    }
+
+    public Employee toEntity(){
+        return new Employee(this.id,this.firstName,this.lastName,this.email);
     }
 }

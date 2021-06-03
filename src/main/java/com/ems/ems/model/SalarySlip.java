@@ -18,6 +18,18 @@ public class SalarySlip {
     @JoinColumn(name="employee_id", nullable=false)
     private Employee employee;
 
+    public SalarySlip() {
+    }
+
+    public SalarySlip(Integer id, double grossAmount, double netAmount, double deductions, double grandTotal, Date date, Employee employee) {
+        this.id = id;
+        this.grossAmount = grossAmount;
+        this.netAmount = netAmount;
+        this.deductions = deductions;
+        this.grandTotal = grandTotal;
+        this.date = date;
+        this.employee = employee;
+    }
 
     public Employee getEmployee() {
         return employee;
