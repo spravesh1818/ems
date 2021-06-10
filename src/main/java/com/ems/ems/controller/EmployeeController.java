@@ -33,6 +33,7 @@ public class EmployeeController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("")
     public ResponseEntity<?> addEmployee(@RequestBody EmployeeDto dto){
+            logger.info(dto.getRole());
             employeeService.save(dto);
             logger.info("Employee added to the database");
             return ResponseEntity.ok(new GenericResponse(200, "SUCCESS", Collections.singletonList("Employee added successfully")));
@@ -40,7 +41,7 @@ public class EmployeeController {
 
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_FINANCE')")
     @GetMapping("")
     public ResponseEntity<?> getAllEmployees(){
             List<EmployeeDto> employees=employeeService.getAllEmployees();

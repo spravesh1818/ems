@@ -18,6 +18,16 @@ public class EmployeeDto {
     private String email;
 
 
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public EmployeeDto(int id, String firstName, String lastName, String email) {
         this.id = id;
         this.firstName = firstName;

@@ -33,13 +33,22 @@ public class EmployeeService {
     public EmployeeDto save(EmployeeDto employeeDto){
         Employee entity=toEntity(employeeDto);
         entity=employeeRepository.save(entity);
+        Role role=null;
+
+        if(employeeDto.getRole().equals("hr")){
+            role=Role.ROLE_HR;
+        }else if(employeeDto.getRole().equals("finance")){
+            role=Role.ROLE_FINANCE;
+        }else{
+            role=Role.ROLE_EMPLOYEE;
+        }
 
         User user=new User();
         user.setEmail(entity.getEmail());
         user.setUsername(entity.getEmail());
         user.setPassword(passwordEncoder.encode("employee123"));
         List<Role> roles=new ArrayList<>();
-        roles.add(Role.ROLE_EMPLOYEE);
+        roles.add(role);
         user.setRoles(roles);
         user.setEmployee(entity);
         userRepository.save(user);

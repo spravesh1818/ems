@@ -3,6 +3,8 @@ import PageNotFound from "./shared/components/PageNotFound";
 import LandingPage from "./shared/components/LandingPage";
 import employeeRoutes from "@/app/employee/employee-routes";
 import adminRoutes from "@/app/admin/admin-routes";
+import financeRoutes from "@/app/finance/employee-routes";
+import hrRoutes from "@/app/hr/employee-routes";
 
 const appRoutes = [
     {
@@ -17,7 +19,7 @@ const appRoutes = [
     },
 ];
 
-const routes=[...employeeRoutes,...appRoutes,...adminRoutes]
+const routes=[...employeeRoutes,...appRoutes,...adminRoutes,...financeRoutes,...hrRoutes]
 const router = createRouter({
     history: createWebHistory(),
     routes,

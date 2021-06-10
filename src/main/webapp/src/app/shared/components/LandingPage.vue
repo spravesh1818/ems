@@ -90,8 +90,12 @@ export default {
 
         if(res.role==="ROLE_ADMIN"){
           this.$router.push("/admin");
-        }else{
+        }else if(res.role==="ROLE_EMPLOYEE"){
           this.$router.push("/employee");
+        }else if(res.role==="ROLE_FINANCE"){
+          this.$router.push("/finance");
+        }else{
+          this.$router.push("/hr");
         }
 
       }).catch(err=>{

@@ -17,7 +17,7 @@ const addAnEmployee=(data)=>{
     const url = `${apiBaseUrl}/admin/employee`;
     console.log(headers.Authorization);
     console.log("Adding employee");
-    return httpClient.post(url,{firstName:data.firstName,lastName: data.lastName,email:data.email},{headers:headers}).then(res =>res);
+    return httpClient.post(url,{firstName:data.firstName,lastName: data.lastName,email:data.email,role:data.role},{headers:headers}).then(res =>res);
 }
 
 const deleteEmployee=(id)=>{

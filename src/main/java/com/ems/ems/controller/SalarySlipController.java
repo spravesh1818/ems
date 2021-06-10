@@ -38,7 +38,7 @@ public class SalarySlipController {
 
 
     @GetMapping("")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HR')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HR') or hasRole('ROLE_FINANCE')")
     public ResponseEntity<?> getAllSalarySlips(){
         logger.info("Getting all salary slips");
         try {
@@ -53,7 +53,7 @@ public class SalarySlipController {
     }
 
     @PostMapping("")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HR')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HR') or hasRole('ROLE_FINANCE')")
     public ResponseEntity<?> addSalarySlip(@RequestBody SalaryDTO salaryDTO) throws ParseException {
         logger.info("Data has arrived");
         Optional<Employee> employee=employeeRepo.findById(salaryDTO.getEmployee_id());

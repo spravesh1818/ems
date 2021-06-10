@@ -55,7 +55,7 @@ public class ShiftController {
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_HR')")
     public ResponseEntity<?> addShift(@RequestBody ShiftDTO shiftDTO){
-
+        return null;
     }
 
 
