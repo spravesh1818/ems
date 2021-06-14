@@ -27,6 +27,9 @@ public class Employee {
     @OneToMany(mappedBy="employee",orphanRemoval = true,cascade = CascadeType.ALL)
     private Set<Shift> shifts;
 
+    @OneToMany(mappedBy="employee",orphanRemoval = true,cascade = CascadeType.ALL)
+    private Set<Leave> leaves;
+
     public Set<Shift> getShifts() {
         return shifts;
     }

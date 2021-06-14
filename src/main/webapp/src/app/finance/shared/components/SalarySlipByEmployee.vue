@@ -4,13 +4,10 @@
     <div class="row is-full tile is-parent">
       <article class="tile is-child notification is-danger">
         <p class="title">Salary Slip By Employee</p>
-        <p class="subtitle">All salary slip by employee</p>
+        <p class="subtitle">Select An Employee To View His/Her Salary Slip</p>
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <button class="button is-primary" @click="isAddEmployeesActive=true">
-                <strong>Create A Salary Slip</strong>
-              </button>
             </div>
           </div>
         </div>
@@ -18,6 +15,19 @@
 
         </div>
       </article>
+    </div>
+
+    <div class="row is-full tile is-parent">
+      <div class="tile is-child box field">
+        <div class="select">
+          <select v-model="employeeSelected" @change="employeeDataChanged($event)">
+            <option value="" disabled selected>Select An Option</option>
+            <option v-for="employee in employee_list" v-bind:key="employee.id" :value="employee.id">
+              {{employee.firstName}} {{employee.lastName}}({{employee.email}}
+            </option>
+          </select>
+        </div>
+      </div>
     </div>
 
     <div class="row is-full tile is-parent">
@@ -34,12 +44,12 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
+          <tr v-for="(salary_slip,index) in salarySlipInfo" v-bind:key="index">
             <th>1</th>
-            <td>January</td>
-            <td>10,000</td>
-            <td>7,000</td>
-            <td>3,000</td>
+            <td>{{salary_slip.date}}</td>
+            <td>{{salary_slip.grossAmount}}</td>
+            <td>{{salary_slip.netAmount}}</td>
+            <td>{{salary_slip.deductions}}</td>
             <td><button>Print</button></td>
           </tr>
           </tbody>
@@ -49,123 +59,47 @@
 
   </div>
 
-
-
-  <div v-if="isAddEmployeesActive" class="modal is-active">
-    <div class="modal-background" @click="isAddEmployeesActive=false"></div>
-    <div class="modal-content">
-      <div class="tile is-parent">
-        <div class="tile is-child box">
-          <div class="field">
-            <h3>Add a salary slip</h3>
-
-            <p class="control has-icons-left has-icons-right">
-              <input class="input" placeholder="First Name" type="text" required>
-            </p>
-          </div>
-          <div class="field">
-            <p class="control has-icons-left">
-              <input class="input" placeholder="Last Name" type="text" required>
-            </p>
-          </div>
-
-          <div class="field">
-            <p class="control has-icons-left">
-              <input class="input" placeholder="Email" type="email" required>
-            </p>
-          </div>
-
-
-          <div class="field">
-            <p class="control">
-              <button class="button is-success">
-                Save
-              </button>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button aria-label="close" class="modal-close is-large" @click="isAddEmployeesActive=false"></button>
-  </div>
-  <div v-if="isEditModalActive" class="modal is-active">
-    <div class="modal-background" @click="isEditModalActive=false"></div>
-    <div class="modal-content">
-      <div class="tile is-parent">
-        <div class="tile is-child box">
-          <h3>Edit an employee information</h3>
-
-          <div class="field">
-            <p class="control has-icons-left has-icons-right">
-              <input class="input" v-model="edit_data.first_name" placeholder="First Name" type="text" required>
-            </p>
-          </div>
-          <div class="field">
-            <p class="control has-icons-left">
-              <input class="input" v-model="edit_data.last_name" placeholder="Last Name" type="text" required>
-            </p>
-          </div>
-
-          <div class="field">
-            <p class="control has-icons-left">
-              <input class="input" v-model="edit_data.email" placeholder="Email" type="email" required>
-            </p>
-          </div>
-
-
-          <div class="field">
-            <p class="control">
-              <button class="button is-success">
-                Update
-              </button>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button aria-label="close" class="modal-close is-large" @click="isEditModalActive=false"></button>
-  </div>
-  <div v-if="isDeleteModalActive" class="modal is-active">
-    <div class="modal-background" @click="isDeleteModalActive=false"></div>
-    <div class="modal-content">
-      <div class="tile is-parent">
-        <div class="tile is-child box">
-
-          <p>Are you sure you want to delete this employee information?</p>
-
-
-          <div class="field">
-            <p class="control">
-              <button class="button is-danger m-3">
-                Delete
-              </button>
-              <button class="button is-primary m-3" @click="isDeleteModalActive=false">
-                Cancel
-              </button>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button aria-label="close" class="modal-close is-large" @click="isDeleteModalActive=false"></button>
-  </div>
 </template>
 
 <script>
+import {getAllEmployees} from "@/app/admin/shared/services/employeeServices/employeeCrudService";
+import {getAllSalarySlipsOfAnEmployee} from "@/app/finance/shared/services/financeDeptServices";
+
 export default {
   name: "SalarySlipByEmployee",
+  mounted() {
+    this.employeeListPopulate();
+  },
   data() {
     return {
+      employeeSelected:'',
+      employee_list:[],
+      salarySlipInfo:[],
       isAddEmployeesActive: false,
       isDeleteModalActive:false,
       isEditModalActive:false,
-      edit_data:{
-        first_name:"Gopal",
-        last_name:"Bharvad",
-        email:"gopal.b@gmail.com",
-      }
     }
   },
+  methods:{
+    employeeListPopulate(){
+      const resp=getAllEmployees();
+      resp.then(res=>{
+        console.table(res.data.data[0]);
+        console.log(res.data.data[0][0].id)
+        this.employee_list=res.data.data[0];
+      });
+    },
+    employeeDataChanged(event){
+      console.log(event.target.value);
+      const resp=getAllSalarySlipsOfAnEmployee(event.target.value);
+      resp.then(res=>{
+        console.table(res.data.data[0]);
+        console.log(res.data.data[0]);
+        this.salarySlipInfo=res.data.data[0];
+      })
+
+    }
+  }
 }
 </script>
 

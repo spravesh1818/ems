@@ -8,7 +8,7 @@
           <div class="navbar-item">
             <div class="buttons">
               <button class="button is-primary" @click="isAddEmployeesActive=true">
-                <strong>Send Correction Request</strong>
+                <strong>Request Attendance Information</strong>
               </button>
             </div>
           </div>

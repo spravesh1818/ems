@@ -12,11 +12,13 @@ public class SalaryDTO {
     private double grandTotal;
     private String date;
     private int employee_id;
+    private String employee_name;
+    private String employee_email;
 
     public SalaryDTO() {
     }
 
-    public SalaryDTO(int id, double grossAmount, double netAmount, double deductions, double grandTotal, String date, int employee_id) {
+    public SalaryDTO(int id, double grossAmount, double netAmount, double deductions, double grandTotal, String date, int employee_id,String employee_name,String employee_email) {
         this.id = id;
         this.grossAmount = grossAmount;
         this.netAmount = netAmount;
@@ -24,6 +26,8 @@ public class SalaryDTO {
         this.grandTotal = grandTotal;
         this.date = date;
         this.employee_id=employee_id;
+        this.employee_email=employee_email;
+        this.employee_name=employee_name;
     }
 
     public int getEmployee_id() {
@@ -85,5 +89,19 @@ public class SalaryDTO {
     }
 
 
+    public String getEmployee_name() {
+        return employee_name;
+    }
 
+    public void setEmployee_name(String employee_name) {
+        this.employee_name = employee_name;
+    }
+
+    public String getEmployee_email() {
+        return employee_email;
+    }
+
+    public void setEmployee_email(String employee_email) {
+        this.employee_email = employee_email;
+    }
 }

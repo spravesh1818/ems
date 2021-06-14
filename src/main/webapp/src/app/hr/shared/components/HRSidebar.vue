@@ -6,6 +6,7 @@
     <ul class="menu-list">
       <li><router-link to="/hr/attendance">Attendence</router-link></li>
       <li><router-link to="/hr/shift">Shift List</router-link></li>
+      <li><router-link to="/hr/profile">Profile</router-link></li>
     </ul>
   </aside>
 </template>

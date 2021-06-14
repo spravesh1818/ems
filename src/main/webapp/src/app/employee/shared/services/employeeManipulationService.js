@@ -32,31 +32,37 @@ const headers = {
 // }
 
 
-const getAllSalarySlips=()=>{
-    const url=`${apiBaseUrl}/salary-slip`;
+// const getAllLeaves=()=>{
+//     const url=`${apiBaseUrl}/leave`;
+//
+//     return httpClient.get(url,{headers:headers}).then(res =>res);
+// }
 
-    return httpClient.get(url,{headers:headers}).then(res =>res);
+const addLeaveRequest=(data)=>{
+    console.log(data);
+    const url=`${apiBaseUrl}/leave/employee`;
+    return httpClient.post(url,data,{headers:headers}).then(res =>res);
 }
 
-const addSalarySlip=(data)=>{
-    const url=`${apiBaseUrl}/salary-slip`;
-    return httpClient.post(url,{id:0,grossAmount:data.grossAmount,netAmount:data.netAmount,deductions:data.deductions,grandTotal:data.grandTotal,date:"27/11/2021",employee_id:data.employee_id},{headers:headers}).then(res =>res);
-}
-
-const getAllSalarySlipsOfAnEmployee=(id)=>{
-    const url=`${apiBaseUrl}/salary-slip/employee/${id}`;
+const getAllLeavesOfAnEmployee=()=>{
+    const url=`${apiBaseUrl}/leave/employee/all`;
     return httpClient.get(url,{headers:headers}).then(res=>res);
 }
 
-const deleteSalarySlip=(id)=>{
-    const url=`${apiBaseUrl}/salary-slip/${id}`;
-    return httpClient.delete(url,{headers:headers}).then(res =>res);
+const deleteEmployeeLeave=(id)=>{
+    const url=`${apiBaseUrl}/leave/${id}`;
+    return httpClient.delete(url,{headers:headers}).then(res=>res);
 }
+//
+// const deleteSalarySlip=(id)=>{
+//     const url=`${apiBaseUrl}/salary-slip/${id}`;
+//     return httpClient.delete(url,{headers:headers}).then(res =>res);
+// }
+//
+// const salarySlipEdit=(data)=>{
+//     console.log(data);
+//     const url=`${apiBaseUrl}/salary-slip/${data.employee_id}`;
+//     return httpClient.put(url,data,{headers:headers}).then(res =>res);
+// }
 
-const salarySlipEdit=(data)=>{
-    console.log(data);
-    const url=`${apiBaseUrl}/salary-slip/${data.employee_id}`;
-    return httpClient.put(url,data,{headers:headers}).then(res =>res);
-}
-
-export { getAllSalarySlips,addSalarySlip,getAllSalarySlipsOfAnEmployee,deleteSalarySlip,salarySlipEdit };
+export { addLeaveRequest,getAllLeavesOfAnEmployee,deleteEmployeeLeave };

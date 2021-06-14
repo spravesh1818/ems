@@ -1,6 +1,7 @@
 import FinanceDept from "@/app/finance/FinanceDept";
 import CreateAndListSalarySlips from "@/app/finance/shared/components/CreateAndListSalarySlips";
 import SalarySlipByEmployee from "@/app/finance/shared/components/SalarySlipByEmployee";
+import UserProfile from "@/app/shared/components/UserProfile";
 
 const financeRoutes = [
     {
@@ -15,6 +16,10 @@ const financeRoutes = [
             {
                 path:"salary-slip-by-employee",
                 component:SalarySlipByEmployee
+            },
+            {
+                path:'profile',
+                component: UserProfile
             }
         ]
     }

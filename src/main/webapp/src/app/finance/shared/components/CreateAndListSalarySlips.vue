@@ -30,6 +30,8 @@
             <th>Gross Salary</th>
             <th>Net Salary</th>
             <th>Deductions</th>
+            <th>Employee Name</th>
+            <th>Employee Email</th>
             <th>Actions</th>
           </tr>
           </thead>
@@ -40,7 +42,10 @@
             <td>{{salary_slip.grossAmount}}</td>
             <td>{{salary_slip.netAmount}}</td>
             <td>{{salary_slip.deductions}}</td>
-            <td><button>Print</button></td>
+            <td>{{salary_slip.employee_email}}</td>
+            <td>{{salary_slip.employee_name}}</td>
+            <td><button class="button is-danger" @click="deletePrepare(salary_slip.id)">Delete</button>
+              <button class="button is-info is-light mr-2" @click="editSalarySlip(index)">Edit</button></td>
           </tr>
           </tbody>
         </table>
@@ -78,18 +83,19 @@
 
           <div class="field">
             <p class="control has-icons-left">
-              <input class="input" placeholder="dd/mm/yyyy" type="text" v-model="addSalarySlipForm.date" required>
+              <input class="input" placeholder="mm/dd/yyyy" type="text" v-model="addSalarySlipForm.date" required>
             </p>
           </div>
 
           <div class="field">
-            <p class="control has-icons-left">
-              <select class="input" v-model="addSalarySlipForm.employee_id">
+              <div class="select">
+              <select v-model="addSalarySlipForm.employee_id">
+                <option value="" disabled selected>Select An Option</option>
                 <option v-for="employee in employee_list" v-bind:key="employee.id" :value="employee.id">
-                  {{employee.firstName}} {{employee.lastName}}
+                  {{employee.firstName}} {{employee.lastName}}({{employee.email}}
                 </option>
               </select>
-            </p>
+          </div>
           </div>
 
           <div class="field">
@@ -110,33 +116,49 @@
     <div class="modal-content">
       <div class="tile is-parent">
         <div class="tile is-child box">
-          <h3>Edit an employee information</h3>
+            <div class="field">
+              <h3>Edit a salary slip</h3>
 
-          <div class="field">
-            <p class="control has-icons-left has-icons-right">
-              <input class="input" v-model="edit_data.first_name" placeholder="First Name" type="text" required>
-            </p>
-          </div>
-          <div class="field">
-            <p class="control has-icons-left">
-              <input class="input" v-model="edit_data.last_name" placeholder="Last Name" type="text" required>
-            </p>
-          </div>
+              <p class="control has-icons-left has-icons-right">
+                <input class="input" placeholder="Gross Amount" v-model="salarySlipEditForm.grossAmount" type="number" required>
+              </p>
+            </div>
+            <div class="field">
+              <p class="control has-icons-left">
+                <input class="input" placeholder="Net Amount" v-model="salarySlipEditForm.netAmount" type="number" required>
+              </p>
+            </div>
 
-          <div class="field">
-            <p class="control has-icons-left">
-              <input class="input" v-model="edit_data.email" placeholder="Email" type="email" required>
-            </p>
-          </div>
+            <div class="field">
+              <p class="control has-icons-left">
+                <input class="input" placeholder="deductions" v-model="salarySlipEditForm.deductions" type="number" required>
+              </p>
+            </div>
 
+            <div class="field">
+              <p class="control has-icons-left">
+                <input class="input" placeholder="mm/dd/yyyy" type="text" v-model="salarySlipEditForm.date" required>
+              </p>
+            </div>
 
-          <div class="field">
-            <p class="control">
-              <button class="button is-success">
-                Update
-              </button>
-            </p>
-          </div>
+            <div class="field">
+              <div class="select">
+                <select v-model="salarySlipEditForm.employee_id">
+                  <option value="" disabled selected>Select An Option</option>
+                  <option v-for="employee in employee_list" v-bind:key="employee.id" :value="employee.id">
+                    {{employee.firstName}} {{employee.lastName}}({{employee.email}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <p class="control">
+                <button type="submit" class="button is-success" @click="editSalaryData">
+                  Update
+                </button>
+              </p>
+            </div>
         </div>
       </div>
     </div>
@@ -153,7 +175,7 @@
 
           <div class="field">
             <p class="control">
-              <button class="button is-danger m-3">
+              <button class="button is-danger m-3" @click="deleteItem">
                 Delete
               </button>
               <button class="button is-primary m-3" @click="isDeleteModalActive=false">
@@ -169,8 +191,13 @@
 </template>
 
 <script>
-import { getAllEmployees} from "@/app/admin/shared/services/employeeServices/employeeCrudService";
-import {addSalarySlip, getAllSalarySlips} from "@/app/finance/shared/services/financeDeptServices";
+import {getAllEmployees} from "@/app/admin/shared/services/employeeServices/employeeCrudService";
+import {
+  addSalarySlip,
+  deleteSalarySlip,
+  getAllSalarySlips,
+  salarySlipEdit
+} from "@/app/finance/shared/services/financeDeptServices";
 
 export default {
   name: "CreateAndListSalarySlip",
@@ -194,10 +221,14 @@ export default {
       isAddSalarySlipActive: false,
       isDeleteModalActive:false,
       isEditModalActive:false,
-      edit_data:{
-        first_name:"Gopal",
-        last_name:"Bharvad",
-        email:"gopal.b@gmail.com",
+      deleteId:{},
+      salarySlipEditForm:{
+        grossAmount:null,
+        netAmount:null,
+        deductions:null,
+        grandTotal:null,
+        date:"",
+        employee_id:null
       }
     }
   },
@@ -225,7 +256,23 @@ export default {
       resp.then(res=>{
         console.log(res);
       });
-    }
+    },
+    deletePrepare(id){
+      this.deleteId=id;
+      this.isDeleteModalActive=true;
+    },
+    deleteItem(){
+      deleteSalarySlip(this.deleteId);
+      this.isDeleteModalActive=false;
+      location.reload();
+    },
+    editSalarySlip(index){
+      this.salarySlipEditForm=this.salary_slips[index];
+      this.isEditModalActive=true;
+    },
+    editSalaryData(){
+      salarySlipEdit(this.salarySlipEditForm).then(res=>{console.log(res);this.isEditModalActive=false;});
+    },
   }
 }
 </script>

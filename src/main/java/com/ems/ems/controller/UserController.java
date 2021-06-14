@@ -40,6 +40,11 @@ public class UserController {
     return new AuthResponseDTO(token,refresh_token,"Bearer",user.getRoles().get(0));
   }
 
+  @GetMapping("/test")
+  public String test(){
+    return "Hello";
+  }
+
   @PostMapping("/signup")
   @ApiOperation(value = "${UserController.signup}")
   @ApiResponses(value = {//
@@ -76,7 +81,7 @@ public class UserController {
   }
 
   @GetMapping(value = "/me")
-  @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+  @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_FINANCE') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_HR')")
   @ApiOperation(value = "${UserController.me}", response = UserResponseDTO.class, authorizations = { @Authorization(value="apiKey") })
   @ApiResponses(value = {//
       @ApiResponse(code = 400, message = "Something went wrong"), //
@@ -94,11 +99,15 @@ public class UserController {
 
 
   @PostMapping("/change-password")
-  @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HR')")
+  @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_FINANCE') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_HR')")
   public ResponseEntity<?> changePassword(HttpServletRequest req, @RequestBody ChangePasswordDTO passwordDTO){
-    Boolean success=userService.changePassword(passwordDTO.getId(),passwordDTO.getPassword());
-    if(success)
+    String message=userService.changePassword(passwordDTO);
+    if(message.equals("Password Changed"))
             return ResponseEntity.ok(new GenericResponse(200,"SUCCESS", Collections.singletonList("Password Changed Successfully")));
+    else if(message.equals("Password and confirm password don't match"))
+      return ResponseEntity.ok(new GenericResponse(200,"FAILED", Collections.singletonList("Password and Confirm password don't match")));
+    else if(message.equals("Old password you entered is incorrect"))
+      return ResponseEntity.ok(new GenericResponse(200,"FAILED", Collections.singletonList("Old password you entered is incorrect")));
     else
       return ResponseEntity.ok(new GenericResponse(200,"FAILED", Collections.singletonList("User not present")));
   }

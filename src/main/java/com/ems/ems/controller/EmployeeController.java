@@ -2,18 +2,18 @@ package com.ems.ems.controller;
 
 import com.ems.ems.dto.EmployeeDto;
 import com.ems.ems.dto.GenericResponse;
-import com.ems.ems.model.User;
+import com.ems.ems.dto.UserResponseDTO;
 import com.ems.ems.service.EmployeeService;
 import com.ems.ems.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,6 +30,9 @@ public class EmployeeController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("")
     public ResponseEntity<?> addEmployee(@RequestBody EmployeeDto dto){
@@ -41,7 +44,7 @@ public class EmployeeController {
 
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_FINANCE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_FINANCE') or hasRole('ROLE_HR')")
     @GetMapping("")
     public ResponseEntity<?> getAllEmployees(){
             List<EmployeeDto> employees=employeeService.getAllEmployees();
@@ -73,7 +76,7 @@ public class EmployeeController {
 
                 employeeDto=employeeService.editEmployeeData(id,employeeDto);
                 logger.info("Employee edited successfully");
-                return ResponseEntity.ok(new GenericResponse(200, "SUCCESS", (List<Object>) employeeDto));
+                return ResponseEntity.ok(new GenericResponse(200, "SUCCESS", Collections.singletonList(employeeDto)));
     }
 
 

@@ -1,6 +1,7 @@
 package com.ems.ems.service;
 
 
+import com.ems.ems.dto.ChangePasswordDTO;
 import com.ems.ems.exception.CustomException;
 import com.ems.ems.model.User;
 import com.ems.ems.repository.UserRepository;
@@ -73,16 +74,25 @@ public class UserService {
     return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getRoles());
   }
 
-  public Boolean changePassword(int id,String password){
-    if(userRepository.findById(id).isPresent())
-    {
-      User user=userRepository.findById(id).get();
-      user.setPassword(passwordEncoder.encode(password));
-      userRepository.save(user);
-      return true;
-    }{
-      return false;
+  public String changePassword(ChangePasswordDTO passwordDTO) {
+    if (userRepository.findById(passwordDTO.getId()).isPresent()) {
+      User user = userRepository.findById(passwordDTO.getId()).get();
+      System.out.println(user.getPassword());
+      System.out.println(passwordEncoder.encode(passwordDTO.getOldPassword()));
+      System.out.println(passwordEncoder.matches(passwordDTO.getOldPassword(),user.getPassword()));
+      if (passwordEncoder.matches(passwordDTO.getOldPassword(), user.getPassword())) {
+        if (passwordDTO.getPassword().equals(passwordDTO.getConfirmPassword())) {
+          user.setPassword(passwordEncoder.encode(passwordDTO.getPassword()));
+          userRepository.save(user);
+          return "Password Changed";
+        } else {
+          return "Password and confirm password don't match";
+        }
+      } else {
+        return "Old password you entered is incorrect";
+      }
     }
+    return "User not present";
   }
 
 }

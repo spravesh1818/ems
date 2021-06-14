@@ -6,6 +6,7 @@
     <ul class="menu-list">
       <li><router-link to="/finance/salary-slip">Salary Slips</router-link></li>
       <li><router-link to="/finance/salary-slip-by-employee">Salary Slip By Employees</router-link></li>
+      <li><router-link to="/finance/profile">Profile</router-link></li>
     </ul>
   </aside>
 </template>

@@ -9,8 +9,8 @@ public class Attendence {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private Date date;
-    private Date timeArrived;
-    private Date timeLeft;
+    private String timeArrived;
+    private String timeLeft;
     private double totalHours;
     private boolean absent;
 
@@ -34,19 +34,19 @@ public class Attendence {
         this.date = date;
     }
 
-    public Date getTimeArrived() {
+    public String getTimeArrived() {
         return timeArrived;
     }
 
-    public void setTimeArrived(Date timeArrived) {
+    public void setTimeArrived(String timeArrived) {
         this.timeArrived = timeArrived;
     }
 
-    public Date getTimeLeft() {
+    public String getTimeLeft() {
         return timeLeft;
     }
 
-    public void setTimeLeft(Date timeLeft) {
+    public void setTimeLeft(String timeLeft) {
         this.timeLeft = timeLeft;
     }
 

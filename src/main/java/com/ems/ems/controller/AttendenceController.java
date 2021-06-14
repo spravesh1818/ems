@@ -65,14 +65,13 @@ public class AttendenceController {
         //first parse the date
 
         Date date=new SimpleDateFormat("dd/MM/yyyy").parse(attendenceDTO.getDate());
-        Date timeArrived=new SimpleDateFormat("dd/MM/yyyy").parse(attendenceDTO.getTimeArrived());
-        Date timeLeft=new SimpleDateFormat("dd/MM/yyyy").parse(attendenceDTO.getTimeLeft());
         Attendence attendence=new Attendence();
         attendence.setEmployee(employee.get());
         attendence.setDate(date);
-        attendence.setTimeArrived(timeArrived);
-        attendence.setTimeLeft(timeLeft);
+        attendence.setTimeArrived(attendenceDTO.getTimeArrived());
+        attendence.setTimeLeft(attendenceDTO.getTimeLeft());
         attendence.setTotalHours(attendenceDTO.getTotalHours());
+        attendenceService.addAttendence(attendence);
 
         return ResponseEntity.ok(new GenericResponse(200,"SUCCESS", Collections.singletonList(attendenceDTO)));
 

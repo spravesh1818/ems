@@ -25,15 +25,21 @@ public class AttendenceService {
 
 
     public AttendenceDTO addAttendence(Attendence attendence){
-        attendenceRepository.save(attendence);
-        return new AttendenceDTO(attendence.getId(),attendence.getDate().toString(),attendence.getTimeArrived().toString(),attendence.getTimeLeft().toString(),attendence.getTotalHours(),attendence.isAbsent(),attendence.getEmployee().getId());
+        try{
+            attendenceRepository.save(attendence);
+            return new AttendenceDTO(attendence.getId(),attendence.getDate().toString(),attendence.getTimeArrived().toString(),attendence.getTimeLeft().toString(),attendence.getTotalHours(),attendence.isAbsent(),attendence.getEmployee().getId());
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public void deleteAttendence(int id){
         Optional<Attendence> attendence=attendenceRepository.findById(id);
-        attendence.ifPresent(attendence1 -> {
+        if(attendence.isPresent()){
+            Attendence attendence1=attendence.get();
             attendenceRepository.delete(attendence1);
-        });
+        }
     }
 
 

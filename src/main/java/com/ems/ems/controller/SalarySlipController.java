@@ -6,7 +6,6 @@ import com.ems.ems.dto.SalaryDTO;
 import com.ems.ems.model.Employee;
 import com.ems.ems.model.SalarySlip;
 import com.ems.ems.repository.EmployeeRepository;
-import com.ems.ems.service.EmployeeService;
 import com.ems.ems.service.SalarySlipService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,20 +73,26 @@ public class SalarySlipController {
 
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HR')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_FINANCE')")
     public ResponseEntity<?> deleteSalarySlip(@PathVariable int id){
         salarySlipService.deleteSalarySlip(id);
         return ResponseEntity.ok(new GenericResponse(200,"SUCCESS", Collections.singletonList("SalarySlip Deleted Successfully")));
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_HR')")
+    @PreAuthorize("hasRole('ROLE_FINANCE')")
     public ResponseEntity<?> editSalarySlip(@PathVariable int id,@RequestBody SalaryDTO salaryDTO){
-        return null;
+        try{
+        salaryDTO=salarySlipService.editSalarySlip(id,salaryDTO);
+        logger.info("Salary slip edited successfully");
+        return ResponseEntity.ok(new GenericResponse(200, "SUCCESS", Collections.singletonList(salaryDTO)));}
+        catch (Exception e){
+            return ResponseEntity.ok(new GenericResponse(500, "Error", Collections.singletonList("Error Occured While Parsing Date")));
+        }
     }
 
     @GetMapping("/employee/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HR')")
+    @PreAuthorize("hasRole('ROLE_FINANCE')")
     public ResponseEntity<?> getSalarySlipByEmployeeId(@PathVariable int id){
         List<SalaryDTO> salarySlips=salarySlipService.getSalarySlipByEmployeeId(id);
         return ResponseEntity.ok(new GenericResponse(200,"SUCCESS", Collections.singletonList(salarySlips)));

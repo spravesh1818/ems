@@ -74,13 +74,14 @@
             </div>
 
             <div class="field">
-              <p class="control has-icons-left">
-                <select v-model="employeeAddForm.role">
+                <div class="select">
+                <select v-model="employeeAddForm.role" >
+                  <option value="" disabled selected>Select An Option</option>
                   <option value="employee">Employee</option>
                   <option value="hr">HR</option>
                   <option value="finance">Finance</option>
                 </select>
-              </p>
+                </div>
             </div>
 
 
@@ -215,7 +216,7 @@ export default {
         console.log(res);
         this.isAddEmployeesActive=false;
       });
-      //location.reload();
+      location.reload();
     },
     deletePrepare(id){
       this.deleteId=id;

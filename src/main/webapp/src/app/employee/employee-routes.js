@@ -2,7 +2,8 @@ import Employee from "@/app/employee/Employee";
 import EmployeeAttendenceList from "@/app/employee/shared/components/EmployeeAttendenceList";
 import EmployeeSalarySlip from "@/app/employee/shared/components/EmployeeSalarySlip";
 import EmployeeShiftList from "@/app/employee/shared/components/EmployeeShiftList";
-import EmployeeProfile from "@/app/employee/shared/components/EmployeeProfile";
+import UserProfile from "@/app/shared/components/UserProfile";
+import EmployeeLeaveInformation from "@/app/employee/shared/components/EmployeeLeaveInformation";
 
 const employeeRoutes = [
     {
@@ -23,8 +24,12 @@ const employeeRoutes = [
                 component:EmployeeShiftList
             },
             {
+                path: 'leave',
+                component: EmployeeLeaveInformation
+            },
+            {
                 path:'profile',
-                component: EmployeeProfile
+                component: UserProfile
             }
         ]
 
