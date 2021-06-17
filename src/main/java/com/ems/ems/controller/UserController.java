@@ -1,6 +1,8 @@
 package com.ems.ems.controller;
 
 import com.ems.ems.dto.*;
+import com.ems.ems.exception.CustomException;
+import com.ems.ems.model.Role;
 import com.ems.ems.model.User;
 import com.ems.ems.service.UserService;
 import io.swagger.annotations.*;
@@ -34,10 +36,14 @@ public class UserController {
   public AuthResponseDTO login(//
                                @ApiParam("Username") @RequestParam String username, //
                                @ApiParam("Password") @RequestParam String password) {
-    String token=userService.signin(username, password);
-    String refresh_token=userService.refresh(username);
-    User user=userService.search(username);
-    return new AuthResponseDTO(token,refresh_token,"Bearer",user.getRoles().get(0));
+    try{
+      String token=userService.signin(username, password);
+      String refresh_token=userService.refresh(username);
+      User user=userService.search(username);
+      return new AuthResponseDTO(token,refresh_token,"Bearer",user.getRoles().get(0));}
+    catch (CustomException ex){
+      return new AuthResponseDTO("failed","failed","failed", Role.ROLE_ADMIN);
+    }
   }
 
   @GetMapping("/test")

@@ -1,10 +1,11 @@
 import { httpClient } from '@/app/shared/services';
 
 import {apiBaseUrl} from "@/environment/environment";
+import AsyncLocalStorage from "@createnextapp/async-local-storage";
 
 const headers = {
     'Content-Type': 'application/json',
-    'Authorization': "Bearer "+localStorage.getItem("token")
+    'Authorization': "Bearer "+AsyncLocalStorage.getItem('token')
 }
 
 const getAllEmployees = () => {

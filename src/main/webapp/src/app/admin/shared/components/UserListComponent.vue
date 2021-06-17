@@ -171,6 +171,7 @@ import {
 export default {
   name:"UserListComponent",
   mounted() {
+    console.log(this.$store.state);
     this.employeeListPopulate();
   },
   data() {

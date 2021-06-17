@@ -21,9 +21,14 @@
       <div class="card-content">
         <div class="content">
           <form id="login" @submit="submitForm">
+            <div class="field">
+              <p class="control has-text-danger">
+                {{loginError}}
+              </p>
+            </div>
           <div class="field">
             <p class="control has-icons-left has-icons-right">
-              <input class="input" v-model="form.username" type="text" placeholder="Username" required>
+              <input class="input" v-model="form.username" type="text" @change='clearErrors' placeholder="Username" required>
               <span class="icon is-small is-left">
       <i class="fas fa-envelope"></i>
     </span>
@@ -40,6 +45,7 @@
     </span>
             </p>
           </div>
+
           <div class="field">
             <p class="control">
               <button class="button is-success" :disabled='isLoginButtonDisabled'>
@@ -60,14 +66,19 @@
 
 <script>
 import {fetchUsers} from "@/app/shared/services/authentication/authenticationService";
+import AsyncLocalStorage from '@createnextapp/async-local-storage'
 
 
 
 export default {
   name: "LandingPage",
+  mounted() {
+    this.attemptAutologin();
+  },
   data(){
     return {
       isLoginButtonDisabled:false,
+      loginError:'',
       form:{
         username:"",
         password:""
@@ -75,33 +86,71 @@ export default {
     }
   },
   methods:{
-    submitForm(event){
+    clearErrors(event){
+      console.log(event);
+      console.log("Event occured")
+      this.loginError="";
+    },
+    attemptAutologin(){
+      const token=localStorage.getItem("token");
+      const role=localStorage.getItem("role");
+      console.log(localStorage.getItem("token"));
+      console.log(localStorage.getItem("role"));
+      if(token && role){
+        if(role==="ROLE_ADMIN"){
+          this.$router.push("/admin");
+        }else if(role==="ROLE_EMPLOYEE"){
+          this.$router.push("/employee");
+        }else if(role==="ROLE_FINANCE"){
+          this.$router.push("/finance");
+        }else{
+          this.$router.push("/hr");
+        }
+      }
+    },
+    async submitForm(event){
       event.preventDefault();
       this.isLoginButtonDisabled=true;
       fetchUsers(this.form.username,this.form.password).then(res=>{
         console.log(res);
         this.isLoginButtonDisabled=false;
+
           //got the token
           //now save it in the localstorage
           //and also the role
         localStorage.setItem( 'token', res.token);
-        console.log(res);
         localStorage.setItem('role',res.role);
+          this.$store.commit('updateToken',res.token);
+          if(res.role==="ROLE_ADMIN"){
+            this.$router.push("/admin");
+          }else if(res.role==="ROLE_EMPLOYEE"){
+            this.$router.push("/employee");
+          }else if(res.role==="ROLE_FINANCE"){
+            this.$router.push("/finance");
+          }else{
+            this.$router.push("/hr");
+          }
 
-        if(res.role==="ROLE_ADMIN"){
-          this.$router.push("/admin");
-        }else if(res.role==="ROLE_EMPLOYEE"){
-          this.$router.push("/employee");
-        }else if(res.role==="ROLE_FINANCE"){
-          this.$router.push("/finance");
-        }else{
-          this.$router.push("/hr");
-        }
+
 
       }).catch(err=>{
+        console.log("Login error");
+
         console.log(err);
         this.isLoginButtonDisabled=false;
-      })
+        this.loginError="Username or password incorrect.Please try Again";
+      });
+
+      await AsyncLocalStorage.setItem('@token', localStorage.getItem('token'));
+    }
+  },
+  watch:{
+    'form.username':function(){
+      console.log(this.$store.state);
+      this.loginError="";
+    },
+    'form.password':function (){
+      this.loginError="";
     }
   }
 }
